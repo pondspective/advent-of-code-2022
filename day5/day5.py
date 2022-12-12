@@ -26,7 +26,6 @@ def parse_input(filename):
     # transform stacks
     s_items, s_number = stacks_str.split("\n ")
     rows = s_items.split("\n")
-    print(rows)
     stack_nb = [int(num) for num in s_number.strip().split("   ")]
     stacks_dict = {}
     for stack in stack_nb:
@@ -35,7 +34,6 @@ def parse_input(filename):
             pos = 4*stack-3
             if (len(rows[i]) > pos):
                 if (rows[i][pos] != ' '):
-                    print(f"Row -> {rows[i]} , Item -> {rows[i][pos]}")
                     items.append(rows[i][pos])
         stacks_dict.update({stack:items})
 
@@ -54,6 +52,15 @@ def move_item_n_times(stack ,source, des, round):
         stack = move_item(stack, source, des)
     return stack
 
+def move_many_items(stack ,source, des, items):
+    items = items if len(stack[source]) >= items else len(stack[source])
+    # removed, insert = stack[source][:len(stack[source])-items], stack[source][-items:]
+    print(f"Move {items} from {source} to {des}")
+    stack[des] = stack[des]+stack[source][-items:]
+    stack[source] = stack[source][:len(stack[source])-items]
+    print(stack)
+    return stack
+
 def part1(path):
     stacks, commands = parse_input(path)
     print(stacks)
@@ -65,9 +72,17 @@ def part1(path):
     final_word = "".join([stack[-1] for stack in stacks.values()])
     return final_word
 
-print(part1('input.txt'))
+def part2(path):
+    stacks, commands = parse_input(path)
+    print(stacks)
+    for command in commands:
+        items, source, des = command
+        stacks = move_many_items(stacks, source, des, items)
+    final_word = "".join([stack[-1] for stack in stacks.values()])
+    return final_word
 
-        
+print(part1('input.txt'))
+print(part2('input.txt'))
 
 
 
