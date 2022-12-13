@@ -9,21 +9,20 @@ def has_duplicate_char(txt):
         if chr not in check:
             check.append(chr)
         else:
-            print(f"{chr} is duplicate")
             return True
     return False
 
+def count_start_packet(input, gap):
+    for index in range(0, len(input) - gap + 1):
+        if has_duplicate_char(input[index:index + gap]) == False:
+            print(f"{input[index:index + gap]} is not duplicate")
+            return index + gap
+
 def part1(input):
-    for index in range(0, len(input) - 3):
-        if has_duplicate_char(input[index:index+4]) == False:
-            print(f"{input[index:index+4]} is not duplicate")
-            return index+4
+    return count_start_packet(input, 4)
 
 def part2(input):
-    for index in range(0, len(input) - 13):
-        if has_duplicate_char(input[index:index+14]) == False:
-            print(f"{input[index:index+14]} is not duplicate")
-            return index+14
+    return count_start_packet(input, 14)
 
 print(part1(input_text))
 print(part2(input_text))
